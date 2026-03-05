@@ -5,26 +5,29 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createNote } from '@/lib/api';
+import { useDraftStore } from '@/lib/store/noteStore';
 import type { Note } from '../../types/note';
 
 type NoteFormData = Omit<Note, 'id' | 'createdAt' | 'updatedAt'>;
 
-const initialDraft: NoteFormData = {
-  title: '',
-  content: '',
-  tag: 'Todo',
-};
+// const initialDraft: NoteFormData = {
+//   title: '',
+//   content: '',
+//   tag: 'Todo',
+// };
 
 export default function NoteForm() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { draft, setDraft, clearDraft } = useDraftStore();
 
-  const [formData, setFormData] = useState<NoteFormData>(initialDraft);
+  const [formData, setFormData] = useState(draft);
 
   const createMutation = useMutation({
     mutationFn: (values: NoteFormData) => createNote(values),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
+      clearDraft();
       router.back();
     },
   });
@@ -32,6 +35,7 @@ export default function NoteForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    setDraft({ [name]: value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {

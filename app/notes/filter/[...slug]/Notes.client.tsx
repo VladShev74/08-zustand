@@ -6,13 +6,13 @@ import SearchBox from '@/components/SearchBox/SearchBox'
 import Pagination from '@/components/Pagination/Pagination'
 import NoteList from "@/components/NoteList/NoteList";
 import Link from 'next/link';
-import Modal from '@/components/Modal/Modal'
+// import Modal from '@/components/Modal/Modal'
 import Loader from '@/components/Loader/Loader'
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage'
 import EmptyState from '@/components/EmptyState/EmptyState'
 import { fetchNotes } from "@/lib/api";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import NoteForm from "@/components/NoteForm/NoteForm";
+// import NoteForm from "@/components/NoteForm/NoteForm";
 import { useDebouncedCallback } from 'use-debounce';
 
 type NotesClientProps = {
@@ -23,7 +23,7 @@ function NotesClient({ tag }: NotesClientProps) {
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const debouncedSetSearchTerm = useDebouncedCallback(
     (value: string) => {
